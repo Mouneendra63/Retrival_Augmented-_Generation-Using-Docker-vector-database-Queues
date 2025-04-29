@@ -1,0 +1,24 @@
+# services:
+#   valkey:
+#     image: valkey/valkey:latest
+#     ports:
+#       - "6379:6379"
+      
+version: '3'
+
+services:
+  app:
+    build: .
+    container_name: my-app
+    ports:
+      - "3000:3000"  # Adjust based on your app's port
+    volumes:
+      - .:/usr/src/app  # Mount the app code to the container
+    command: ["sh", "-c", "node index.js & node worker.js"]
+    depends_on:
+      - valkey
+
+  valkey:
+    image: valkey/valkey:latest
+    ports:
+      - "6379:6379"
